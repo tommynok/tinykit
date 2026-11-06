@@ -1886,7 +1886,9 @@ public class MainActivity extends Activity {
                         || label(sv.pkg).toLowerCase(Locale.ROOT).contains(q)) shown.add(sv);
             }
             adapter.set(shown);
-            summary.setText(shown.size() + " " + Tr.t(shown.size() == 1 ? "service running" : "services running"));
+            String pattern = Tr.t(shown.size() == 1 ? "%d service running" : "%d services running");
+            summary.setText(pattern.contains("%d") ? String.format(Locale.getDefault(), pattern, shown.size())
+                    : shown.size() + " " + pattern);
         };
         search.addTextChangedListener(watcher(filter));
         system.setOnCheckedChangeListener((v, on) -> filter.run());
@@ -4024,11 +4026,13 @@ public class MainActivity extends Activity {
                 String out = Shell.run("cat /sys/class/power_supply/*/cycle_count 2>/dev/null | head -1").out;
                 if (out.matches("\\d+")) cycles = out;
             }
-            String stats = Shell.run("dumpsys batterystats | grep -m3 -iE "
+            String stats = Shell.run("dumpsys batterystats 2>/dev/null | grep -m3 -iE "
                     + "'Estimated battery capacity|learned battery capacity'").out;
             for (String line : stats.split("\n")) {
                 int colon = line.indexOf(':');
-                if (colon > 0) info.add(new String[]{line.substring(0, colon).trim(), line.substring(colon + 1).trim()});
+                if (colon > 0 && line.toLowerCase(Locale.ROOT).contains("battery capacity")) {
+                    info.add(new String[]{line.substring(0, colon).trim(), line.substring(colon + 1).trim()});
+                }
             }
         }
         info.add(new String[]{"Charge cycles", cycles != null ? cycles : "Not reported by this phone"});
@@ -5167,11 +5171,13 @@ public class MainActivity extends Activity {
                 if (!TextUtils.isEmpty(tech)) info.add(new String[]{"Technology", tech});
             }
             if (Shell.ready()) {
-                for (String line : Shell.run("dumpsys batterystats | grep -m3 -iE "
+                for (String line : Shell.run("dumpsys batterystats 2>/dev/null | grep -m3 -iE "
                         + "'Estimated battery capacity|learned battery capacity'").out.split("\n")) {
                     int colon = line.indexOf(':');
-                    if (colon > 0) info.add(new String[]{line.substring(0, colon).trim(),
-                            line.substring(colon + 1).trim()});
+                    if (colon > 0 && line.toLowerCase(Locale.ROOT).contains("battery capacity")) {
+                        info.add(new String[]{line.substring(0, colon).trim(),
+                                line.substring(colon + 1).trim()});
+                    }
                 }
             }
             return info;
@@ -5260,7 +5266,7 @@ public class MainActivity extends Activity {
                 String token = who.substring(4).trim();
                 String p = uidPackage(token);
                 pkg = p != null && installedHere(p) ? p : "";
-                who = p != null ? uidTitle(p) : token;
+                who = p != null ? uidTitle(p) : ("0".equals(token) ? "Root / Kernel" : token);
             } else {
                 who = who.replace('_', ' ');
                 who = who.substring(0, 1).toUpperCase(Locale.ROOT) + who.substring(1);
@@ -5351,8 +5357,9 @@ public class MainActivity extends Activity {
             Matcher m = p.matcher(line.trim());
             if (!m.find()) continue;
             String pkg = uidPackage(m.group(1));
-            String who = pkg != null ? uidTitle(pkg) : m.group(1);
-            String detail = "Held " + m.group(3).trim() + "  ·  " + m.group(4) + " times  ·  " + m.group(2);
+            String who = pkg != null ? uidTitle(pkg) : ("0".equals(m.group(1)) ? "Root / Kernel" : m.group(1));
+            String detail = Tr.t("Held ") + m.group(3).trim() + "  ·  "
+                    + m.group(4) + " " + Tr.t("times") + "  ·  " + m.group(2);
             rows.add(new String[]{who, detail, pkg != null && installedHere(pkg) ? pkg : ""});
         }
         return rows;
