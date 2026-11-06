@@ -9,3 +9,5 @@ keystore.properties
 !signing/debug.keystore
 .DS_Store
 wip/
+
+build_output/
