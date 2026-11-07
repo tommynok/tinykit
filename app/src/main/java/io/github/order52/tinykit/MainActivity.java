@@ -1343,7 +1343,7 @@ public class MainActivity extends Activity {
     private void addTile(Class<?> service, String label, int icon, String about) {
         if (Build.VERSION.SDK_INT >= 33) {
             getSystemService(android.app.StatusBarManager.class).requestAddTileService(
-                    new ComponentName(this, service), label,
+                    new ComponentName(this, service), Tr.t(label),
                     android.graphics.drawable.Icon.createWithResource(this, icon),
                     getMainExecutor(), result -> {
                     });
@@ -5348,18 +5348,38 @@ public class MainActivity extends Activity {
                 "Nothing recorded since the last charge, or this phone hides it.", this::wakeups);
     }
 
+    private static String formatTimes(String countStr) {
+        int count = 0;
+        try {
+            count = Integer.parseInt(countStr);
+        } catch (NumberFormatException ignored) {
+            return countStr + " " + Tr.t("times");
+        }
+        String lang = Locale.getDefault().getLanguage();
+        if ("ru".equals(lang)) {
+            int c10 = Math.abs(count) % 10;
+            int c100 = Math.abs(count) % 100;
+            String word = (c10 >= 2 && c10 <= 4 && (c100 < 10 || c100 >= 20)) ? "раза" : "раз";
+            return count + " " + word;
+        }
+        if ("es".equals(lang)) {
+            return count + " " + (count == 1 ? "vez" : "veces");
+        }
+        return count + " " + (count == 1 ? "time" : "times");
+    }
+
     private List<String[]> wakeups() {
         forgetProfiles();
         List<String[]> rows = new ArrayList<>();
         String out = Shell.run("dumpsys batterystats --charged | sed -n '/All partial wake locks/,/^$/p'").out;
-        Pattern p = Pattern.compile("Wake lock (\\S+) (.+?): ([0-9hms ]+?) \\((\\d+) times\\)");
+        Pattern p = Pattern.compile("Wake lock (\\S+) (.+?): ([0-9hms ]+?) \\((\\d+) times?\\)");
         for (String line : out.split("\n")) {
             Matcher m = p.matcher(line.trim());
             if (!m.find()) continue;
             String pkg = uidPackage(m.group(1));
             String who = pkg != null ? uidTitle(pkg) : ("0".equals(m.group(1)) ? "Root / Kernel" : m.group(1));
             String detail = Tr.t("Held ") + m.group(3).trim() + "  ·  "
-                    + m.group(4) + " " + Tr.t("times") + "  ·  " + m.group(2);
+                    + formatTimes(m.group(4)) + "  ·  " + m.group(2);
             rows.add(new String[]{who, detail, pkg != null && installedHere(pkg) ? pkg : ""});
         }
         return rows;

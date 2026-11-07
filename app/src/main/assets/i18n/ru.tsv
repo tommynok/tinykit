@@ -1232,7 +1232,7 @@ Termux returned no result.	Termux не вернул результата.
 Command copied. Paste it in Termux (hold, Paste) and press Enter.	Команда скопирована. Вставьте её в Termux (удерживайте, «Вставить») и нажмите Enter.
 Start by itself	Запускать самостоятельно
 After a restart, and when you open TinyKit, start Shizuku if that needs nobody (it has worked before, or the auth token is saved).	После перезагрузки и при открытии TinyKit запускать Shizuku, если для этого никто не нужен (раньше уже получалось или сохранён токен авторизации).
-Deep sleep	Глубокий сон (Doze)
+Deep sleep	Управление спящим режимом (Doze)
 Light	Лёгкий
 Moderate	Умеренный
 High	Высокий
@@ -1244,13 +1244,13 @@ Doze 10 minutes after the screen goes off. Doesn't change day-to-day use.	Зас
 Doze after a minute, wakes every 2 hours. Notifications arrive a little later.	Сон через 1 минуту, просыпается каждые 2 часа. Уведомления приходят чуть позже.
 Doze after 30 seconds, wakes every 4 hours. Background work is delayed.	Сон через 30 секунд, просыпается каждые 4 часа. Фоновая работа откладывается.
 Doze as soon as the screen is off, wakes every 6 hours. The most battery saved, the most delayed.	Сон сразу при выключении экрана, просыпается каждые 6 часов. Максимум экономии и максимум задержек.
-Couldn't change deep sleep. Is Shizuku running?	Не удалось изменить глубокий сон. Shizuku запущен?
-Deep sleep now	Глубокий сон сейчас
-Puts the phone into Doze right now, until you use it again. Turn the screen off to see it work.	Немедленно переводит телефон в глубокий сон (Doze). Режим активируется после выключения экрана.
+Couldn't change deep sleep. Is Shizuku running?	Не удалось изменить спящий режим. Shizuku запущен?
+Deep sleep now	Перевести в спящий режим сейчас
+Puts the phone into Doze right now, until you use it again. Turn the screen off to see it work.	Немедленно переводит телефон в спящий режим (Doze). Режим активируется после выключения экрана.
 Done. Doze is on.	Готово. Режим сна включён.
 Wake up	Разбудить
-Takes the phone out of deep sleep.	Выводит телефон из глубокого сна.
-Apps that ignore deep sleep	Приложения, игнорирующие глубокий сон
+Takes the phone out of deep sleep.	Выводит телефон из спящего режима.
+Apps that ignore deep sleep	Приложения, игнорирующие спящий режим
 Apps you keep alive (and the system's own) don't doze.	Приложения, которые вы оставляете живыми (и системные), не засыпают.
 Make the phone doze sooner after the screen goes off, and wake up less often, like Comatose. Pick a profile, or doze right now.	Управление спящим режимом Doze: ускоряет засыпание после выключения экрана и сокращает пробуждения для экономии батареи.
 Running services	Запущенные службы
@@ -1350,3 +1350,4 @@ Min learned battery capacity	Минимальная замеренная ёмк�
 %d service running	Активна %d служба
 %d services running	Активных служб: %d
 times	раз
+Deep	Глубокий
