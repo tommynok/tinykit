@@ -1338,3 +1338,8 @@ Min learned battery capacity	Capacidad mínima aprendida
 %d services running	%d servicios en ejecución
 times	veces
 Deep	Profundo
+trimmed and compacted memory	memoria optimizada y compactada
+deleted %s of cache	se eliminaron %s de caché
+started storage maintenance	se inició el mantenimiento del almacenamiento
+closed cached apps	se cerraron aplicaciones en caché
+%s memory free now	%s de memoria libre ahora

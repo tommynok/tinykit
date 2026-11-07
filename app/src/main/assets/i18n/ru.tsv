@@ -1351,3 +1351,8 @@ Min learned battery capacity	Минимальная замеренная ёмк�
 %d services running	Активных служб: %d
 times	раз
 Deep	Глубокий
+trimmed and compacted memory	память оптимизирована и сжата
+deleted %s of cache	удалено %s кэша
+started storage maintenance	запущено обслуживание хранилища
+closed cached apps	закрыты фоновые приложения
+%s memory free now	сейчас свободно %s памяти
